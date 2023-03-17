@@ -17,6 +17,7 @@ public class Hero : Entity
 
     public bool isAttacking = false;
     public bool isRecharged = true;
+    public bool isDead = false;
 
     public Transform attackPos;
     public float attackRange;
@@ -55,25 +56,37 @@ public class Hero : Entity
     {
         CheckGround();
     }
+    private void Dead()
+    {
+        anim.SetBool("Death", true);
+        jumpForce = 0f;
+        speed = 0f;
+    }
+    
     public override void GetDamage()
     {
         health -= 1;
+        anim.SetTrigger("Hurt");
        if (health == 0)
        {
         foreach (var h in hearts)
         h.sprite = deadHeart;
-        Die();
+       // this.enabled = false ;
+
        }
     }
     private void Update()
     {
-        if (isGrounded && !isAttacking) State = States.Idle;
+        if (isGrounded && !isAttacking)  State = States.Idle;
         if (!isAttacking && Input.GetButton("Horizontal"))
             Run();
         if (!isAttacking && isGrounded && Input.GetButtonDown("Jump"))
             Jump();
         if (Input.GetButtonDown("Fire1"))
         Attack();
+        if (health < 1)
+        Dead();
+            
 
         if(health > lives)
         health = lives;
@@ -154,5 +167,7 @@ public enum States
     Idle,
     Run,
     Jump,
-    attack
+    attack,
+    Hurt,
+    Death
 }
