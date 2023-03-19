@@ -60,6 +60,7 @@
      <Compile Include="Assets\screpts\Hero.cs" />
      <Compile Include="Assets\screpts\MainMenu.cs" />
      <Compile Include="Assets\screpts\Obstacle.cs" />
+     <Compile Include="Assets\screpts\Settings.cs" />
      <Compile Include="Assets\screpts\WalkingMonster.cs" />
      <Compile Include="Assets\screpts\Worm.cs" />
      <Compile Include="Assets\screpts\defasa.cs" />
