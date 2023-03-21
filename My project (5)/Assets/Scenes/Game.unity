@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 66124967}
   - component: {fileID: 66124969}
   - component: {fileID: 66124968}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Grafics_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,9 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb70b521c1ac3e54b8e772a42f306924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  health: 0
-  jumpForce: 15
+  health: 5
   hearts:
   - {fileID: 929902592}
   - {fileID: 1790928375}
@@ -309,10 +307,19 @@ MonoBehaviour:
   isRecharged: 1
   isDead: 0
   attackPos: {fileID: 538005135}
-  attackRange: 2.26
+  attackRange: 2.05
   enemy:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
+  jumpForce: 15
+  onGround: 0
+  Ground:
+    serializedVersion: 2
+    m_Bits: 2560
+  GroundCheck: {fileID: 1949581683}
+  moveVector: {x: 0, y: 0}
+  speed: 5
+  faceRight: 1
 --- !u!50 &276629390
 Rigidbody2D:
   serializedVersion: 4
@@ -347,7 +354,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.16319704, y: 1.127394}
+  m_Offset: {x: -0.16319704, y: 1.0901821}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -358,7 +365,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.4903498, y: 2.2500186}
+  m_Size: {x: 1.4903498, y: 2.3244424}
   m_EdgeRadius: 0
 --- !u!4 &276629392
 Transform:
@@ -368,11 +375,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 276629386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.45, y: -1.15, z: -2.8973897}
+  m_LocalPosition: {x: -2.45, y: -1.24, z: -2.8973897}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1863889591}
   - {fileID: 538005135}
+  - {fileID: 1949581683}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -688,7 +696,7 @@ GameObject:
   m_Component:
   - component: {fileID: 446851984}
   - component: {fileID: 446851985}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Grafics_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1160,7 +1168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 986381607}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1582,7 +1590,7 @@ GameObject:
   - component: {fileID: 1482968468}
   - component: {fileID: 1482968470}
   - component: {fileID: 1482968469}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Grafics_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1797,7 +1805,7 @@ GameObject:
   - component: {fileID: 1734090450}
   - component: {fileID: 1734090452}
   - component: {fileID: 1734090451}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Grafics_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2124,6 +2132,53 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1949581682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1949581683}
+  - component: {fileID: 1949581684}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1949581683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949581682}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.248, y: 0.08, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 276629392}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1949581684
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949581682}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.3549527, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.18291533
 --- !u!1 &2114547781
 GameObject:
   m_ObjectHideFlags: 0
