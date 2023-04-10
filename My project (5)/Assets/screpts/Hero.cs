@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 public class Hero : Entity
 {
-    [SerializeField] private float speed = 3f;
+   
     [SerializeField] private int health;
-    [SerializeField] private float jumpForce = 15f;
-    private bool isGrounded = false;
 
     [SerializeField] private Image[] hearts;
     
@@ -18,6 +16,7 @@ public class Hero : Entity
     public bool isAttacking = false;
     public bool isRecharged = true;
     public bool isDead = false;
+    public bool isJumpAttack = false;
 
     public Transform attackPos;
     public float attackRange;
@@ -26,15 +25,74 @@ public class Hero : Entity
 
     private Rigidbody2D rb;
     private Animator anim;
-    private SpriteRenderer sprite;
+   
 
     public static Hero Instance {get; set;}
-
-    private States State
+    public float jumpForce = 15f;
+void Jump()
+{
+    if(Input.GetKeyDown(KeyCode.S))
     {
-        get { return (States)anim.GetInteger("state"); }
-        set { anim.SetInteger("state", (int)value); }
+        Physics2D.IgnoreLayerCollision(10, 11, true);
+        Invoke("IgnoreLayerOff", 1f); 
     }
+ if (onGround && Input.GetKeyDown(KeyCode.Space))
+ {
+ rb.velocity = new Vector2(rb.velocity.x, 0);
+ rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+ }
+ if (rb.velocity.y == 0){anim.SetBool("zeroVelocityY", true);}
+ else{ anim.SetBool("zeroVelocityY", false);}
+ if (!onGround && Input.GetButtonDown("Fire1"))
+ {
+    anim.SetTrigger("JumpAttack");
+        isJumpAttack = true;
+        isRecharged = false;
+
+            StartCoroutine(AttackAnimation());
+            StartCoroutine(AttackCollDown());
+ }  
+}
+
+
+public bool onGround;
+public LayerMask Ground;
+public Transform GroundCheck;
+private float GroundCheckRadius;
+void CheckingGround()
+{
+ onGround = Physics2D.OverlapCircle(GroundCheck.position, GroundCheckRadius, Ground);
+ anim.SetBool("onGround", onGround);
+}
+
+void IgnoreLayerOff()
+{
+    Physics2D.IgnoreLayerCollision(10, 11, false);}
+
+
+
+
+    public Vector2 moveVector;
+public int speed = 5;
+void Walk()
+{
+moveVector.x = Input.GetAxisRaw("Horizontal");
+rb.velocity = new Vector2(moveVector.x * speed, rb.velocity.y);
+anim.SetFloat("moveX", Mathf.Abs(moveVector.x));
+}
+
+public bool faceRight = true;
+void Reflect()
+{
+   if ((moveVector.x > 0 && !faceRight) || (moveVector.x < 0 && faceRight))
+  {
+transform.localScale *= new Vector2(-1, 1);
+faceRight = !faceRight;
+  }
+}
+
+
+
     private void Awake()
     {
         lives = 5;
@@ -42,27 +100,11 @@ public class Hero : Entity
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        sprite = GetComponentInChildren<SpriteRenderer>();
         isRecharged = true;
+        GroundCheckRadius = GroundCheck.GetComponent<CircleCollider2D>().radius;
     }
-    private void Run()
-    {
-        if (isGrounded) State = States.Run;
-        Vector3 dir = transform.right * Input.GetAxis("Horizontal");
-        transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
-        sprite.flipX = dir.x < 0.0f;
-    }
-    private void FixedUpdate()
-    {
-        CheckGround();
-    }
-    private void Dead()
-    {
-        anim.SetBool("Death", true);
-        jumpForce = 0f;
-        speed = 0f;
-    }
-    
+
+ 
     public override void GetDamage()
     {
         health -= 1;
@@ -75,52 +117,34 @@ public class Hero : Entity
 
        }
     }
-    private void Update()
-    {
-        if (isGrounded && !isAttacking)  State = States.Idle;
-        if (!isAttacking && Input.GetButton("Horizontal"))
-            Run();
-        if (!isAttacking && isGrounded && Input.GetButtonDown("Jump"))
-            Jump();
-        if (Input.GetButtonDown("Fire1"))
-        Attack();
-        if (health < 1)
-        Dead();
-            
+void Update()
+ {
+ Attack();
+ Walk();
+  Reflect();
+ Jump();
+ CheckingGround();
 
-        if(health > lives)
+
+if(health > lives)
         health = lives;
-
-        for (int i = 0; i < hearts.Length; i++)
+ for (int i = 0; i < hearts.Length; i++)
         {
             if(i < health)
             hearts[i].sprite = aliveHeart;  
             else 
-            hearts[i].sprite =deadHeart;
+            hearts[i].sprite = deadHeart;
 
             if(i <lives)
             hearts[i].enabled = true;
             else
             hearts[i].enabled = false;
         }
-    }
-    private void Jump()
-    {
-        rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-    }
-    
-    private void OnDrawGizmosSelected()
+}
+   private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
-    }
-    
-    private void CheckGround()
-    {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.3f);
-        isGrounded = collider.Length > 1;
-
-        if (!isGrounded) State = States.Jump;
     }
 
     private IEnumerator AttackAnimation()
@@ -137,9 +161,9 @@ public class Hero : Entity
     
     private void Attack()
     {
-        if(isGrounded && isRecharged)
+        if(onGround && isRecharged && Input.GetButtonDown("Fire1"))
         {
-            State = States.attack;
+            anim.SetTrigger("Attack");
             isAttacking = true;
             isRecharged = false;
 
@@ -157,17 +181,12 @@ public class Hero : Entity
             colliders[i].GetComponent<Entity>().GetDamage();
         }
     }
+    void Dead()
+    {
+        if( health == 0)
+        {
+            anim.SetBool("Death", true);
+        }
+    }
 
-}
-
-
-
-public enum States
-{
-    Idle,
-    Run,
-    Jump,
-    attack,
-    Hurt,
-    Death
 }
