@@ -59,8 +59,12 @@
      <Compile Include="Assets\screpts\Entity.cs" />
      <Compile Include="Assets\screpts\Hero.cs" />
      <Compile Include="Assets\screpts\MainMenu.cs" />
+     <Compile Include="Assets\screpts\MeleeEnemy.cs" />
      <Compile Include="Assets\screpts\Obstacle.cs" />
+     <Compile Include="Assets\screpts\ProjectBehavior.cs" />
+     <Compile Include="Assets\screpts\Projectile.cs" />
      <Compile Include="Assets\screpts\Settings.cs" />
+     <Compile Include="Assets\screpts\SoundVolumeControllerComponent.cs" />
      <Compile Include="Assets\screpts\WalkingMonster.cs" />
      <Compile Include="Assets\screpts\Worm.cs" />
      <Compile Include="Assets\screpts\defasa.cs" />
@@ -675,6 +679,18 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Unity.2D.Animation.Samples.Dependency.csproj">
+      <Project>{8174FF1F-9055-A230-21DD-5F6A575712BA}</Project>
+      <Name>Unity.2D.Animation.Samples.Dependency</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Animation.Samples.Runtime.csproj">
+      <Project>{9058D480-F023-416B-A6B1-F547B3DCEDA5}</Project>
+      <Name>Unity.2D.Animation.Samples.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Animation.Samples.Editor.csproj">
+      <Project>{4551924C-6AA0-5182-656B-B9CA7C686433}</Project>
+      <Name>Unity.2D.Animation.Samples.Editor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

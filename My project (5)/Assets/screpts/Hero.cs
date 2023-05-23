@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Hero : Entity
+public class Hero : Entity 
 {
    
     [SerializeField] private int health;
@@ -123,6 +123,8 @@ faceRight = !faceRight;
        }
     }
 
+
+
 void Update()
  {
  Attack();
@@ -132,6 +134,8 @@ void Update()
 MoveOnWall();
 WallJump();
 LedgeGo();
+
+
 
 
 if(health > lives)
@@ -221,7 +225,7 @@ new Vector2(transform.localScale.x, 0),
 WallCheckRayDistance,
 Wall
 );
- onWallDown = Physics2D.OverlapCircle(WallCheckDown.position, WallCheckRadiusDown, Wall);
+ onWallDown = Physics2D.OverlapCircle(WallCheckDown.position, WallCheckRadiusDown, Ground);
  onWall = (onWallUp && onWallDown);
  anim.SetBool("onWall", onWall);
  if (onWallUp && !onWallDown) { anim.SetBool("wallCheckUp", true); }
@@ -347,9 +351,7 @@ void CheckingLedge()
  Gizmos.DrawLine
 (
  WallCheckUp.position,
- new Vector2(WallCheckUp.position.x + WallCheckRayDistance * transform.localScale.x,
- WallCheckUp.position.y)
-);
+ new Vector2(WallCheckUp.position.x + WallCheckRayDistance * transform.localScale.x,WallCheckUp.position.y));
  Gizmos.color = Color.red;
  Gizmos.DrawLine
 (   
@@ -363,8 +365,6 @@ void CheckingLedge()
 (
    new Vector2(WallCheckUp.position.x + WallCheckRayDistance * transform.localScale.x,
   WallCheckUp.position.y + ledgeRayCorrectY),
- new Vector2(WallCheckUp.position.x + WallCheckRayDistance * transform.localScale.x,
- WallCheckUp.position.y)
-);
+ new Vector2(WallCheckUp.position.x + WallCheckRayDistance * transform.localScale.x,WallCheckUp.position.y));
 }
-}
+    }
